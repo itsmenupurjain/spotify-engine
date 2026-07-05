@@ -76,10 +76,9 @@ async def _run_pipeline_job(job_name: str):
 @router.post("/ingest/trigger", response_model=IngestResponse)
 async def trigger_ingestion(
     request: IngestRequest,
-    background_tasks: BackgroundTasks,
     db: AsyncSession = Depends(get_db),
 ):
-    """Manually trigger ingestion for one or all sources."""
+    """Manually trigger ingestion for one or all sources (Synchronous for Serverless)."""
     if request.source and request.source not in VALID_SOURCES:
         raise HTTPException(
             status_code=400,
@@ -87,21 +86,22 @@ async def trigger_ingestion(
         )
 
     source_label = request.source or "all sources"
-    background_tasks.add_task(_run_ingestion, request.source)
+    
+    # Execute synchronously
+    await _run_ingestion(request.source)
 
     return IngestResponse(
-        status="accepted",
-        message=f"Ingestion triggered for {source_label}. Processing in background.",
+        status="completed",
+        message=f"Ingestion completed for {source_label}.",
     )
 
 
 @router.post("/pipeline/trigger/{job_id}")
 async def trigger_pipeline_job(
     job_id: str,
-    background_tasks: BackgroundTasks,
 ):
     """
-    Manually trigger a specific pipeline job.
+    Manually trigger a specific pipeline job (Synchronous for Serverless).
 
     Valid job IDs: classify, embed, cluster, synthesize, ingest
     """
@@ -111,16 +111,17 @@ async def trigger_pipeline_job(
             detail=f"Invalid job '{job_id}'. Valid jobs: {VALID_JOBS}"
         )
 
+    # Execute synchronously
     if job_id == "ingest":
-        background_tasks.add_task(_run_ingestion, None)
+        await _run_ingestion(None)
     else:
-        background_tasks.add_task(_run_pipeline_job, job_id)
+        await _run_pipeline_job(job_id)
 
     return {
-        "status": "accepted",
-        "message": f"Pipeline job '{job_id}' triggered. Processing in background.",
+        "status": "completed",
+        "message": f"Pipeline job '{job_id}' completed.",
         "job_id": job_id,
-        "triggered_at": datetime.now(timezone.utc).isoformat(),
+        "completed_at": datetime.now(timezone.utc).isoformat(),
     }
 
 

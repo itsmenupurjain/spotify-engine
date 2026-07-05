@@ -1,0 +1,48 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "api/index.py",
+      "use": "@vercel/python",
+      "config": {
+        "runtime": "python3.9"
+      }
+    },
+    {
+      "src": "frontend/package.json",
+      "use": "@vercel/next"
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/index.py"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/frontend/$1"
+    }
+  ],
+  "crons": [
+    {
+      "path": "/api/pipeline/trigger/ingest_all_sources",
+      "schedule": "0 2 * * 0"
+    },
+    {
+      "path": "/api/pipeline/trigger/classify_new_reviews",
+      "schedule": "0 1 * * *"
+    },
+    {
+      "path": "/api/pipeline/trigger/embed_new_reviews",
+      "schedule": "0 2 * * *"
+    },
+    {
+      "path": "/api/pipeline/trigger/refresh_synthesis_cache",
+      "schedule": "0 3 * * *"
+    },
+    {
+      "path": "/api/pipeline/trigger/update_clusters",
+      "schedule": "0 4 * * 1"
+    }
+  ]
+}
