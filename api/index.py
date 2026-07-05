@@ -1,7 +1,11 @@
 import sys
 import os
 
-# Add the backend directory to the Python path so it can resolve 'app'
-sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'backend'))
+# Add root directory to path so 'backend' module is resolvable
+sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
-from app.main import app
+# Add backend directory to path so internal imports (like 'from app.config') resolve
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'backend'))
+
+# Explicitly import from backend so Vercel AST parser includes the folder
+from backend.app.main import app
