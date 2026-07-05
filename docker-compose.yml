@@ -1,0 +1,78 @@
+version: "3.9"
+
+services:
+  # ─── PostgreSQL + pgvector ───────────────────────────────────
+  db:
+    image: ankane/pgvector:latest
+    container_name: spotify_db
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-spotify}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-spotify_password}
+      POSTGRES_DB: ${POSTGRES_DB:-spotify_intelligence}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./scripts/init_db.sql:/docker-entrypoint-initdb.d/init_db.sql
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-spotify}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    networks:
+      - app_network
+
+  # ─── FastAPI Backend ─────────────────────────────────────────
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: spotify_api
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://${POSTGRES_USER:-spotify}:${POSTGRES_PASSWORD:-spotify_password}@db:5432/${POSTGRES_DB:-spotify_intelligence}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - REDDIT_CLIENT_ID=${REDDIT_CLIENT_ID}
+      - REDDIT_CLIENT_SECRET=${REDDIT_CLIENT_SECRET}
+      - REDDIT_USER_AGENT=${REDDIT_USER_AGENT}
+      - TWITTER_BEARER_TOKEN=${TWITTER_BEARER_TOKEN}
+      - APIFY_API_TOKEN=${APIFY_API_TOKEN}
+      - APP_ENV=production
+      - CORS_ORIGINS=http://localhost:3000,${FRONTEND_URL:-}
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - app_network
+    volumes:
+      - ./scripts:/app/scripts:ro
+
+  # ─── Next.js Frontend ────────────────────────────────────────
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        - NEXT_PUBLIC_API_URL=http://api:8000/api
+    container_name: spotify_frontend
+    environment:
+      - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL:-http://localhost:8000/api}
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
+    restart: unless-stopped
+    networks:
+      - app_network
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  app_network:
+    driver: bridge

@@ -1,0 +1,322 @@
+@import "tailwindcss";
+
+@theme {
+  /* Spotify-inspired premium color palette */
+  --color-bg-primary: #0a0a0f;
+  --color-bg-secondary: #12121a;
+  --color-bg-card: #1a1a2e;
+  --color-bg-card-hover: #222240;
+  --color-bg-elevated: #16213e;
+
+  --color-accent-green: #1DB954;
+  --color-accent-green-dim: #1aa34a;
+  --color-accent-purple: #7c3aed;
+  --color-accent-blue: #3b82f6;
+  --color-accent-orange: #f59e0b;
+  --color-accent-pink: #ec4899;
+  --color-accent-cyan: #06b6d4;
+
+  --color-text-primary: #f0f0f5;
+  --color-text-secondary: #9ca3af;
+  --color-text-muted: #6b7280;
+
+  --color-border: #2a2a3e;
+  --color-border-hover: #3a3a55;
+
+  /* Sentiment colors */
+  --color-sentiment-very-negative: #ef4444;
+  --color-sentiment-negative: #f97316;
+  --color-sentiment-neutral: #6b7280;
+  --color-sentiment-positive: #22c55e;
+  --color-sentiment-very-positive: #1DB954;
+
+  /* Source colors */
+  --color-source-app-store: #3b82f6;
+  --color-source-play-store: #22c55e;
+  --color-source-reddit: #f97316;
+  --color-source-community: #8b5cf6;
+  --color-source-twitter: #06b6d4;
+
+  /* Segment colors */
+  --color-segment-explorer: #ec4899;
+  --color-segment-background: #6b7280;
+  --color-segment-mood: #8b5cf6;
+  --color-segment-identity: #f59e0b;
+  --color-segment-social: #06b6d4;
+  --color-segment-new: #22c55e;
+  --color-segment-unclear: #374151;
+}
+
+/* ===== Base Styles ===== */
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) transparent;
+}
+
+body {
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+}
+
+/* ===== Glass Card ===== */
+
+.glass-card {
+  background: linear-gradient(135deg, rgba(26, 26, 46, 0.8), rgba(22, 33, 62, 0.6));
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  backdrop-filter: blur(20px);
+  transition: all 0.3s ease;
+}
+
+.glass-card:hover {
+  border-color: var(--color-border-hover);
+  box-shadow: 0 8px 32px rgba(29, 185, 84, 0.08);
+}
+
+/* ===== Sidebar ===== */
+
+.sidebar {
+  background: linear-gradient(180deg, var(--color-bg-secondary), var(--color-bg-primary));
+  border-right: 1px solid var(--color-border);
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  border-radius: 10px;
+  color: var(--color-text-secondary);
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.sidebar-link:hover {
+  background: rgba(29, 185, 84, 0.1);
+  color: var(--color-text-primary);
+}
+
+.sidebar-link.active {
+  background: linear-gradient(135deg, rgba(29, 185, 84, 0.15), rgba(124, 58, 237, 0.1));
+  color: var(--color-accent-green);
+  border: 1px solid rgba(29, 185, 84, 0.2);
+}
+
+/* ===== Badges ===== */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 10px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.badge-green {
+  background: rgba(29, 185, 84, 0.15);
+  color: var(--color-accent-green);
+}
+
+.badge-red {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+}
+
+.badge-orange {
+  background: rgba(249, 115, 22, 0.15);
+  color: #f97316;
+}
+
+.badge-blue {
+  background: rgba(59, 130, 246, 0.15);
+  color: #3b82f6;
+}
+
+.badge-purple {
+  background: rgba(139, 92, 246, 0.15);
+  color: #8b5cf6;
+}
+
+.badge-cyan {
+  background: rgba(6, 182, 212, 0.15);
+  color: #06b6d4;
+}
+
+.badge-gray {
+  background: rgba(107, 114, 128, 0.15);
+  color: #9ca3af;
+}
+
+/* ===== Trend Indicators ===== */
+
+.trend-growing { color: var(--color-accent-green); }
+.trend-stable { color: var(--color-text-muted); }
+.trend-declining { color: #ef4444; }
+
+/* ===== Stat Card ===== */
+
+.stat-card {
+  background: linear-gradient(135deg, rgba(26, 26, 46, 0.9), rgba(22, 33, 62, 0.7));
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.stat-value {
+  font-size: 32px;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--color-accent-green), var(--color-accent-purple));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.stat-label {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  margin-top: 4px;
+  font-weight: 500;
+}
+
+/* ===== Source Badge Colors ===== */
+
+.source-app_store { background: rgba(59, 130, 246, 0.15); color: var(--color-source-app-store); }
+.source-play_store { background: rgba(34, 197, 94, 0.15); color: var(--color-source-play-store); }
+.source-reddit { background: rgba(249, 115, 22, 0.15); color: var(--color-source-reddit); }
+.source-spotify_community { background: rgba(139, 92, 246, 0.15); color: var(--color-source-community); }
+.source-twitter_x { background: rgba(6, 182, 212, 0.15); color: var(--color-source-twitter); }
+
+/* ===== Chat Interface ===== */
+
+.chat-input {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 14px 18px;
+  color: var(--color-text-primary);
+  font-size: 15px;
+  width: 100%;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.chat-input:focus {
+  outline: none;
+  border-color: var(--color-accent-green);
+  box-shadow: 0 0 0 3px rgba(29, 185, 84, 0.15);
+}
+
+.chat-input::placeholder {
+  color: var(--color-text-muted);
+}
+
+/* ===== Buttons ===== */
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--color-accent-green), var(--color-accent-green-dim));
+  color: white;
+  font-weight: 600;
+  padding: 10px 24px;
+  border-radius: 10px;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(29, 185, 84, 0.3);
+}
+
+.btn-secondary {
+  background: var(--color-bg-card);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border);
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.btn-secondary:hover {
+  border-color: var(--color-accent-green);
+  background: var(--color-bg-card-hover);
+}
+
+/* ===== Quote Card ===== */
+
+.quote-card {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-left: 3px solid var(--color-accent-green);
+  border-radius: 0 12px 12px 0;
+  padding: 16px 20px;
+  transition: all 0.2s ease;
+}
+
+.quote-card:hover {
+  border-left-color: var(--color-accent-purple);
+  background: var(--color-bg-card-hover);
+}
+
+/* ===== Animations ===== */
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-16px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 5px rgba(29, 185, 84, 0.2); }
+  50% { box-shadow: 0 0 20px rgba(29, 185, 84, 0.4); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+.animate-slide-in {
+  animation: slideIn 0.3s ease-out forwards;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* Stagger children animations */
+.stagger-children > * {
+  opacity: 0;
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+.stagger-children > *:nth-child(1) { animation-delay: 0.05s; }
+.stagger-children > *:nth-child(2) { animation-delay: 0.1s; }
+.stagger-children > *:nth-child(3) { animation-delay: 0.15s; }
+.stagger-children > *:nth-child(4) { animation-delay: 0.2s; }
+.stagger-children > *:nth-child(5) { animation-delay: 0.25s; }
+.stagger-children > *:nth-child(6) { animation-delay: 0.3s; }
+
+/* ===== Responsive Grid ===== */
+
+.dashboard-grid {
+  display: grid;
+  gap: 24px;
+}
+
+@media (min-width: 1024px) {
+  .dashboard-grid-2 { grid-template-columns: repeat(2, 1fr); }
+  .dashboard-grid-3 { grid-template-columns: repeat(3, 1fr); }
+  .dashboard-grid-4 { grid-template-columns: repeat(4, 1fr); }
+}

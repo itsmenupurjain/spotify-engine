@@ -1,0 +1,59 @@
+# ─── Python ──────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+*.egg
+.eggs/
+.venv/
+venv/
+env/
+*.pyc
+
+# ─── Environment ─────────────────────────
+.env
+.env.local
+.env.production
+*.env
+
+# ─── Node / Next.js ──────────────────────
+node_modules/
+.next/
+out/
+dist/
+*.tsbuildinfo
+.vercel/
+
+# ─── Database ────────────────────────────
+*.db
+*.sqlite3
+postgres_data/
+
+# ─── IDE ─────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# ─── Docker ──────────────────────────────
+.docker/
+
+# ─── Logs ────────────────────────────────
+*.log
+logs/
+
+# ─── Playwright ──────────────────────────
+playwright-report/
+test-results/
+
+# ─── Seed data output ────────────────────
+scripts/seed_output.json
+
+# ─── Alembic ─────────────────────────────
+backend/alembic/versions/__pycache__/
