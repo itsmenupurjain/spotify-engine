@@ -6,7 +6,10 @@ import uuid
 from datetime import datetime, timezone
 from sqlalchemy import Column, String, Integer, Text, DateTime
 from sqlalchemy.dialects.postgresql import UUID
-from pgvector.sqlalchemy import Vector
+try:
+    from pgvector.sqlalchemy import Vector
+except ImportError:
+    from sqlalchemy import Text as Vector  # fallback if pgvector not installed
 from app.database import Base
 
 
