@@ -13,7 +13,7 @@ class Settings(BaseSettings):
     app_env: str = "development"
     app_debug: bool = True
     api_rate_limit: int = 100
-    cors_origins: str = "http://localhost:3000"
+    cors_origins: str = "*"
 
     # Database
     database_url: str = "postgresql+asyncpg://postgres:postgres@localhost:5432/spotify_discovery"
