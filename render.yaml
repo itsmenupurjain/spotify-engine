@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: spotify-discovery-backend
+    runtime: python
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: DATABASE_URL_SYNC
+        sync: false
+      - key: GROQ_API_KEY
+        sync: false
+      - key: CORS_ORIGINS
+        value: https://spotify-discovery-engine.vercel.app,http://localhost:3000
+      - key: APP_ENV
+        value: production
+    healthCheckPath: /api/health
