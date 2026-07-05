@@ -21,6 +21,7 @@ class Settings(BaseSettings):
 
     # AI APIs
     groq_api_key: Optional[str] = None
+    huggingface_api_key: Optional[str] = None
 
     # Reddit API
     reddit_client_id: Optional[str] = None
