@@ -21,15 +21,20 @@ limiter = Limiter(key_func=get_remote_address)
 async def lifespan(app: FastAPI):
     """Application lifecycle — startup and shutdown."""
     # Startup
-    print("🚀 Spotify Discovery Engine starting up (Serverless Mode)...")
+    print("🚀 Spotify Discovery Engine starting up (Render Mode)...")
     print(f"   Environment: {settings.app_env}")
-    print(f"   Database: {settings.database_url[:50]}...")
-    print("⚠️ APScheduler disabled for Serverless compatibility. Using Vercel Crons.")
+    
+    # Start background scheduler
+    from app.scheduler import scheduler
+    scheduler.start()
+    print("⏰ Background scheduler started.")
 
     yield
 
     # Shutdown
     print("🛑 Spotify Discovery Engine shutting down...")
+    scheduler.shutdown()
+    print("⏰ Background scheduler stopped.")
 
 
 
